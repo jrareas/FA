@@ -157,6 +157,7 @@ $th = [
     _("Type"), 
     _("OnHand"),
     _("Address"),
+    _(""),
 ];
 table_header($th);
 $k = 0; //row colour counter
@@ -174,7 +175,8 @@ while ($myrow = db_fetch($items_list))
 //     label_cell("");
 //     label_cell("");
 //     amount_cell($myrow["price"]);
-//  	edit_button_cell("Edit".$myrow['stock_id'], _("Edit"));
+    
+    link_cell("Edit Product", "/inventory/manage/items.php?stock_id=" . $myrow["stock_id"],null, ICON_EDIT);
 //  	delete_button_cell("Delete".$myrow['stock_id'], _("Delete"));
     end_row();
 

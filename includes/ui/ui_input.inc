@@ -604,6 +604,12 @@ function email_row_ex($label, $name, $size, $max=null, $title=null, $value=null,
 	text_row_ex($label, $name, $size, $max, $title, $value, $params, $post_label);
 }
 
+function link_cell($name, $value, $title=false, $icon=false, $target_blank=true) {
+    echo "<td align='center'>";
+    echo "<a href='$value' " .  ($target_blank ? "target='_blank'>" : ">") . set_icon($icon) . "</a>";
+    echo "</td>";
+}
+
 function link_row($label, $name, $value, $size, $max, $title=null, $params="", $post_label="")
 {
 	$val = get_post($name);
