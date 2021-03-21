@@ -820,10 +820,14 @@ function dimensions_list_row($label, $name, $selected_id=null, $no_option=false,
 
 //---------------------------------------------------------------------------------------------------
 
+function stock_search_items_list() {
+    set_editor('item', $name, $editkey);
+}
+
 function stock_items_list($name, $selected_id=null, $all_option=false, 
 	$submit_on_change=false, $opts=array(), $editkey = false, $type = "stock")
 {
-	$sql = "SELECT stock_id, s.description, c.description, s.inactive, s.editable
+	$sql = "SELECT stock_id, concat(stock_id, ' - ', s.description) as description_combined, c.description, s.inactive, s.editable, s.description
 			FROM ".TB_PREF."stock_master s,".TB_PREF."stock_category c WHERE s.category_id=c.category_id";
 
 	if (isset($opts['fixed_asset']) && $opts['fixed_asset'])
@@ -834,7 +838,7 @@ function stock_items_list($name, $selected_id=null, $all_option=false,
 	if ($editkey)
 		set_editor('item', $name, $editkey);
 
-	$ret = combo_input($name, $selected_id, $sql, 'stock_id', 's.description',
+	$ret = combo_input($name, $selected_id, $sql, 'stock_id', 'description_combined',
 		array_merge(
 		  array(
 			'format' => '_format_stock_items',
@@ -846,7 +850,7 @@ function stock_items_list($name, $selected_id=null, $all_option=false,
 			'size'=>10,
 			'select_submit'=> $submit_on_change,
 			'category' => 2,
-			'order' => array('c.description','stock_id'),
+			'order' => array('c.description','description_combined'),
 			'editlink' => $editkey ? add_edit_combo('item') : false,
 			'editable' => false,
 			'max' => 255
@@ -857,6 +861,11 @@ function stock_items_list($name, $selected_id=null, $all_option=false,
 function _format_stock_items($row)
 {
 	return (user_show_codes() ?  ($row[0] . "&nbsp;-&nbsp;") : "") . $row[1];
+}
+
+function stock_items_search_list_cells() {
+    return  "<td>$label</td>\n";
+//     echo stock_search_items_list();
 }
 
 function stock_items_list_cells($label, $name, $selected_id=null, $all_option=false, 
@@ -882,14 +891,7 @@ function stock_items_list_cells($label, $name, $selected_id=null, $all_option=fa
 		array_merge(array('cells'=>true, 'show_inactive'=>$all), $opts), $editkey);
 
 }
-/*
-function stock_items_list_row($label, $name, $selected_id=null, $all_option=false, $submit_on_change=false)
-{
-	echo "<tr>\n";
-	stock_items_list_cells($label, $name, $selected_id, $all_option, $submit_on_change);
-	echo "</tr>\n";
-}
-*/
+
 //---------------------------------------------------------------------------------------------------
 //
 // Select item via foreign code.

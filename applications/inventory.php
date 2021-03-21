@@ -53,6 +53,10 @@ class inventory_app extends application
 		$this->add_rapp_function(3, _("Standard &Costs"),
 			"inventory/cost_update.php?", 'SA_STANDARDCOST', MENU_MAINTENANCE);
 
+		$this->add_module(_("Items Search"));
+		$this->add_lapp_function(4, _("Search Items"),
+		    "inventory/manage/items_search.php?", 'SA_ITEM', MENU_MAINTENANCE);
+		
 		$this->add_extensions();
 	}
 }

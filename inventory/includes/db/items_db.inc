@@ -132,6 +132,16 @@ function get_items($fixed_asset = 0)
 	return db_query($sql,"items could not be retreived");
 }
 
+function get_all_items($filters)
+{
+    $sql = "SELECT s.stock_id, s.description, mb_flag, sum(qty) on_hand  
+FROM " . TB_PREF . "stock_master s
+left join " . TB_PREF . "stock_moves m
+on m.stock_id = s.stock_id 
+group by s.stock_id, s.description";
+    return db_query($sql,"items could not be retreived");
+}
+
 function item_in_foreign_codes($stock_id)
 {
 	$sqls=  array(
