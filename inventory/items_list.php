@@ -155,7 +155,8 @@ $th = [
     _("Stock Id"), 
     _("Description"), 
     _("Type"), 
-    _("OnHand")
+    _("OnHand"),
+    _("Address"),
 ];
 table_header($th);
 $k = 0; //row colour counter
@@ -169,6 +170,7 @@ while ($myrow = db_fetch($items_list))
     label_cell($myrow["description"]);
     label_cell($myrow["mb_flag"]);
     qty_cell($myrow["on_hand"]);
+    label_cell($myrow["stock_address"]);
 //     label_cell("");
 //     label_cell("");
 //     amount_cell($myrow["price"]);

@@ -14,7 +14,7 @@ function update_item($stock_id, $description, $long_description, $category_id,
 	$cogs_account, 	$adjustment_account, $wip_account, $dimension_id, 
 	$dimension2_id, $no_sale, $editable, $no_purchase,
 	$depreciation_method = 'D', $depreciation_rate=100, $depreciation_factor=1,
-	$depreciation_start=null, $fa_class_id=null)
+    $depreciation_start=null, $fa_class_id=null, $inventory_address=null)
 {
 	$sql = "UPDATE ".TB_PREF."stock_master SET long_description=".db_escape($long_description).",
 		description=".db_escape($description).",
@@ -33,7 +33,9 @@ function update_item($stock_id, $description, $long_description, $category_id,
 		depreciation_method=".db_escape($depreciation_method).",
 		depreciation_rate=".db_escape($depreciation_rate).",
 		depreciation_factor=".db_escape($depreciation_factor).",
-		fa_class_id=".db_escape($fa_class_id);
+		fa_class_id=".db_escape($fa_class_id).",
+        stock_address=".db_escape($inventory_address);
+	
 
 	if ($units != '')
 		$sql .= ", units=".db_escape($units);
@@ -134,7 +136,7 @@ function get_items($fixed_asset = 0)
 
 function get_all_items($filters)
 {
-    $sql = "SELECT s.stock_id, s.description, mb_flag, sum(qty) on_hand  
+    $sql = "SELECT s.stock_id, s.description, mb_flag, sum(qty) on_hand , stock_address 
 FROM " . TB_PREF . "stock_master s
 left join " . TB_PREF . "stock_moves m
 on m.stock_id = s.stock_id 

@@ -173,6 +173,7 @@ function clear_data()
 	unset($_POST['depreciation_rate']);
 	unset($_POST['depreciation_factor']);
 	unset($_POST['depreciation_start']);
+	unset($_POST['stock_address']);
 }
 
 //------------------------------------------------------------------------------------
@@ -244,7 +245,8 @@ if (isset($_POST['addupdate']))
 				$_POST['dimension_id'], $_POST['dimension2_id'],
 				check_value('no_sale'), check_value('editable'), check_value('no_purchase'),
 				get_post('depreciation_method'), input_num('depreciation_rate'), input_num('depreciation_factor'), get_post('depreciation_start', null),
-				get_post('fa_class_id'));
+				get_post('fa_class_id'),
+			    get_post('stock_address'));
 
 			update_record_status($_POST['NewStockID'], $_POST['inactive'],
 				'stock_master', 'stock_id');
@@ -364,6 +366,8 @@ function item_settings(&$stock_id, $new_item)
 
 	textarea_row(_('Description:'), 'long_description', null, 42, 3);
 
+	text_row(_("Stock Address:"), 'stock_address', null, 40, 150);
+	
 	stock_categories_list_row(_("Category:"), 'category_id', null, false, $new_item, $fixed_asset);
 
 	if ($new_item && (list_updated('category_id') || !isset($_POST['sales_account']))) { // changed category for new item or first page view
