@@ -545,7 +545,8 @@ function text_cells($label, $name, $value=null, $size="", $max="", $title=false,
 function image_cell($stock_id) {
     echo "<td>";
     echo "<div class='img-magnifier-container'>";
-    echo "<img id={$stock_id} alt=[{$stock_id}.jpg] src='../../company/0/images/{$stock_id}.jpg?nocache=1068708940'  height='200' border='0'>";
+    $image = item_img_name($stock_id);
+    echo "<img id={$stock_id} alt=[$image.jpg] src='../../company/0/images/$image.jpg?nocache=1068708940'  height='200' border='0'>";
     echo "</div>";
     echo "</td>\n";
     echo "<script>magnify('{$stock_id}', 3);</script>";
