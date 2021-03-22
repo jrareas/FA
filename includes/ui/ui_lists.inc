@@ -1053,18 +1053,29 @@ function stock_purchasable_items_list_cells($label, $name, $selected_id=null,
 
 //------------------------------------------------------------------------------------
 
-function stock_item_types_list_row($label, $name, $selected_id=null, $enabled=true)
+function stock_item_types_list_row($label, $name, $selected_id=null, $enabled=true, $show_empty_option=false)
 {
 	global $stock_types;
+	$local_stock_types = [];
+	
+	if ($show_empty_option) {
+	    $local_stock_types[""] = _("Please Select");
+	    foreach ($stock_types as $key=>$value) {
+	        $local_stock_types[$key] = $value;
+	    }
+	} else {
+	    $local_stock_types = $stock_types;
+	}
 
 	echo "<tr>";
 	if ($label != null)
 		echo "<td class='label'>$label</td>\n";
 	echo "<td>";
 
-	echo array_selector($name, $selected_id, $stock_types, 
+	echo array_selector($name, $selected_id, $local_stock_types, 
 		array( 
-			'select_submit'=> true, 
+			'select_submit'=> true,
+		    'show_empty_option' => $show_empty_option,
 			'disabled' => !$enabled) );
 	echo "</td></tr>\n";
 }

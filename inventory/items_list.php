@@ -145,9 +145,14 @@ if (list_updated('stock_id') || isset($_POST['_curr_abrev_update']) || isset($_P
 //---------------------------------------------------------------------------------------------------
 
 
-$items_list = get_all_items($filters=[]);
 
-div_start('items_list');
+$items_list = get_all_items($_POST);
+
+div_start('search_results');
+
+div_start("results_count");
+    echo "<center>Found: " . $items_list->num_rows . " Records</center>";
+div_end();
 start_table(TABLESTYLE, "width='30%'");
 
 // $th = array(_("Stock Id"), _("Description"), _("Type"), _("OnHand"), "Storage", "Address");

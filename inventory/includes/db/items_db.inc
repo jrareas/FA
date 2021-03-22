@@ -135,12 +135,42 @@ function get_items($fixed_asset = 0)
 }
 
 function get_all_items($filters)
-{
+{   
+    $where = [];
+    if ($filters) {
+        if($filters['string_term'] && $filters['string_term'] != "") {
+            $term_items = [
+                's.description',
+                's.stock_id'
+            ];
+            foreach ($term_items as $term_item) {
+                $where[] = $term_item . " like '%" . $filters['string_term'] . "%'";
+            }
+        }
+    }
+    if (count($where) > 0) {
+        $where = ["(" . implode(" OR ", $where) . ")"];
+    }
+    if ($filters['empty_address_only'] && $filters['empty_address_only'] == true) {
+        $where[] = "stock_address is null";
+    }
+    
+    if ($filters['mb_flag'] && $filters['mb_flag'] != "") {
+        $where[] = "mb_flag = '" . $filters['mb_flag'] . "'";
+    }
+    
+    if (count($where) > 0) {
+        $wherestr = 'where ' . implode(" AND ", $where);
+    }
+    
+    
     $sql = "SELECT s.stock_id, s.description, mb_flag, sum(qty) on_hand , stock_address 
-FROM " . TB_PREF . "stock_master s
-left join " . TB_PREF . "stock_moves m
-on m.stock_id = s.stock_id 
-group by s.stock_id, s.description";
+            FROM " . TB_PREF . "stock_master s
+            left join " . TB_PREF . "stock_moves m
+            on m.stock_id = s.stock_id
+            $wherestr 
+            group by s.stock_id, s.description";
+    
     return db_query($sql,"items could not be retreived");
 }
 

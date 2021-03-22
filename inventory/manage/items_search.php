@@ -468,32 +468,29 @@ function item_settings(&$stock_id, $new_item)
 	div_end();
 }
 
+function item_search_form() {
+    start_outer_table(TABLESTYLE2);
+    
+    table_section(1);
+    
+    table_section_title(_("Search"));
+    text_row(_("Text:"), 'string_term', null, 52, 200);
+    start_row();
+    echo "<td>"; 
+    echo checkbox(_("Empty Address Only"),"empty_address_only");
+    echo "</td>";
+    end_row();
+    stock_item_types_list_row(_("Item Type:"), 'mb_flag', null, true, true);
+    end_outer_table(1);
+    hidden("search_submit",true);
+    submit_center('search_results', _("Search"), true, '', 'selector');
+}
+
 //-------------------------------------------------------------------------------------------- 
 
 start_form(true);
-if (db_has_stock_items()) 
-{
-	start_table(TABLESTYLE_NOBORDER);
-	start_row();
-	stock_items_search_list_cells();
-	$new_item = get_post('stock_id')=='';
-	end_row();
-	end_table();
-
-	if (get_post('_show_inactive_update')) {
-		$Ajax->activate('stock_id');
-		set_focus('stock_id');
-	}
-}
-else
-{
-	hidden('stock_id', get_post('stock_id'));
-}
-div_start('details');
-
-$stock_id = get_post('stock_id');
-if (!$stock_id)
-	unset($_POST['_tabs_sel']); // force settings tab for new customer
+div_start('search');
+item_search_form();
 
 $tabs = [
     'list' => array(_('&List'), $stock_id),
@@ -501,49 +498,20 @@ $tabs = [
 
 tabbed_content_start('tabs', $tabs);
 
-	switch (get_post('_tabs_sel')) {
-		default:
-		case 'list':
-		    $_GET['search_term'] = $stock_id;
-		    $_GET['page_level'] = 1;
-		    include_once($path_to_root."/inventory/items_list.php");
-		    break;
-		case 'sales_pricing':
-			$_GET['stock_id'] = $stock_id;
-			$_GET['page_level'] = 1;
-			include_once($path_to_root."/inventory/prices.php");
-			break;
-		case 'purchase_pricing':
-			$_GET['stock_id'] = $stock_id;
-			$_GET['page_level'] = 1;
-			include_once($path_to_root."/inventory/purchasing_data.php");
-			break;
-		case 'standard_cost':
-			$_GET['stock_id'] = $stock_id;
-			$_GET['page_level'] = 1;
-			include_once($path_to_root."/inventory/cost_update.php");
-			break;
-		case 'reorder_level':
-			if (!is_inventory_item($stock_id))
-				break;
-			$_GET['page_level'] = 1;
-			$_GET['stock_id'] = $stock_id;
-			include_once($path_to_root."/inventory/reorder_level.php");
-			break;
-		case 'movement':
-			if (!is_inventory_item($stock_id))
-				break;
-			$_GET['stock_id'] = $stock_id;
-			include_once($path_to_root."/inventory/inquiry/stock_movements.php");
-			break;
-		case 'status':
-			$_GET['stock_id'] = $stock_id;
-			include_once($path_to_root."/inventory/inquiry/stock_status.php");
-			break;
-	};
+switch (get_post('_tabs_sel')) {
+    default:
+    case 'list':
+        $_GET['search_term'] = $stock_id;
+        $_GET['page_level'] = 1;
+        if(get_post('search_submit')) {
+            include_once($path_to_root."/inventory/items_list.php");
+        }
+        break;
+};
 
 br();
 tabbed_content_end();
+
 
 div_end();
 
@@ -557,41 +525,3 @@ end_form();
 //------------------------------------------------------------------------------------
 
 end_page(@$_REQUEST['popup']);
-
-function generateBarcode() {
-	$tmpBarcodeID = "";
-	$tmpCountTrys = 0;
-	while ($tmpBarcodeID == "")	{
-		srand ((double) microtime( )*1000000);
-		$random_1  = rand(1,9);
-		$random_2  = rand(0,9);
-		$random_3  = rand(0,9);
-		$random_4  = rand(0,9);
-		$random_5  = rand(0,9);
-		$random_6  = rand(0,9);
-		$random_7  = rand(0,9);
-		//$random_8  = rand(0,9);
-
-			// http://stackoverflow.com/questions/1136642/ean-8-how-to-calculate-checksum-digit
-		$sum1 = $random_2 + $random_4 + $random_6; 
-		$sum2 = 3 * ($random_1  + $random_3  + $random_5  + $random_7 );
-		$checksum_value = $sum1 + $sum2;
-
-		$checksum_digit = 10 - ($checksum_value % 10);
-		if ($checksum_digit == 10) 
-			$checksum_digit = 0;
-
-		$random_8  = $checksum_digit;
-
-		$tmpBarcodeID = $random_1 . $random_2 . $random_3 . $random_4 . $random_5 . $random_6 . $random_7 . $random_8;
-
-		// LETS CHECK TO SEE IF THIS NUMBER HAS EVER BEEN USED
-		$query = "SELECT stock_id FROM ".TB_PREF."stock_master WHERE stock_id='" . $tmpBarcodeID . "'";
-		$arr_stock = db_fetch(db_query($query));
-  
-		if (  !$arr_stock['stock_id'] ) {
-			return $tmpBarcodeID;
-		}
-		$tmpBarcodeID = "";	 
-	}
-}
