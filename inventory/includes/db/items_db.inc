@@ -141,7 +141,8 @@ function get_all_items($filters)
         if($filters['string_term'] && $filters['string_term'] != "") {
             $term_items = [
                 's.description',
-                's.stock_id'
+                's.stock_id',
+                's.stock_address'
             ];
             foreach ($term_items as $term_item) {
                 $where[] = $term_item . " like '%" . $filters['string_term'] . "%'";
