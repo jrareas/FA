@@ -291,6 +291,8 @@ function set_icon($icon, $title=false)
 	return "<img src='$icon' style='vertical-align:middle;width:12px;height:12px;border:0;'".($title ? " title='$title'" : "")." >\n";	
 }
 
+
+
 function button($name, $value, $title=false, $icon=false,  $aspect='')
 {
 	// php silently changes dots,spaces,'[' and characters 128-159
@@ -538,6 +540,15 @@ function text_cells($label, $name, $value=null, $size="", $max="", $title=false,
 
 	echo "</td>\n";
 	$Ajax->addUpdate($name, $name, $value);
+}
+
+function image_cell($stock_id) {
+    echo "<td>";
+    echo "<div class='img-magnifier-container'>";
+    echo "<img id={$stock_id} alt=[{$stock_id}.jpg] src='../../company/0/images/{$stock_id}.jpg?nocache=1068708940'  height='200' border='0'>";
+    echo "</div>";
+    echo "</td>\n";
+    echo "<script>magnify('{$stock_id}', 3);</script>";
 }
 
 function text_cells_ex($label, $name, $size, $max=null, $init=null, $title=null,

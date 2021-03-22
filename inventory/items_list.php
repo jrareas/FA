@@ -153,7 +153,7 @@ div_start('search_results');
 div_start("results_count");
     echo "<center>Found: " . $items_list->num_rows . " Records</center>";
 div_end();
-start_table(TABLESTYLE, "width='30%'");
+start_table(TABLESTYLE, "width='80%'");
 
 // $th = array(_("Stock Id"), _("Description"), _("Type"), _("OnHand"), "Storage", "Address");
 $th = [
@@ -162,6 +162,7 @@ $th = [
     _("Type"), 
     _("OnHand"),
     _("Address"),
+    _("Image"),
     _(""),
 ];
 table_header($th);
@@ -177,6 +178,9 @@ while ($myrow = db_fetch($items_list))
     label_cell($myrow["mb_flag"]);
     qty_cell($myrow["on_hand"]);
     label_cell($myrow["stock_address"]);
+    image_cell($myrow["stock_id"]);
+    
+//     <img id="item_img" alt="[0805W8D1003T5E.jpg]" src="../../company/0/images/0805W8D1003T5E.jpg?nocache=1068708940" height="50" border="0">
 //     label_cell("");
 //     label_cell("");
 //     amount_cell($myrow["price"]);
