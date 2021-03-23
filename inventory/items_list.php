@@ -162,6 +162,7 @@ $th = [
     _("Type"), 
     _("OnHand"),
     _("OnOrder"),
+    _("ORders"),
     _("Address"),
     _("Image"),
     _(""),
@@ -179,7 +180,13 @@ while ($myrow = db_fetch($items_list))
     label_cell($myrow["mb_flag"]);
     qty_cell($myrow["on_hand"]);
     qty_cell($myrow["on_order"]);
+    $order_links = "";
+    foreach (explode(",", $myrow["orders"]) as $order) {
+        $order_links .= get_supplier_trans_view_str(ST_PURCHORDER,$order) . " ,";
+    }
+    label_cell(trim($order_links,","));
     label_cell($myrow["stock_address"]);
+    
     image_cell($myrow["stock_id"]);
     
 //     <img id="item_img" alt="[0805W8D1003T5E.jpg]" src="../../company/0/images/0805W8D1003T5E.jpg?nocache=1068708940" height="50" border="0">
