@@ -161,6 +161,7 @@ $th = [
     _("Description"), 
     _("Type"), 
     _("OnHand"),
+    _("OnOrder"),
     _("Address"),
     _("Image"),
     _(""),
@@ -177,6 +178,7 @@ while ($myrow = db_fetch($items_list))
     label_cell($myrow["description"]);
     label_cell($myrow["mb_flag"]);
     qty_cell($myrow["on_hand"]);
+    qty_cell($myrow["on_order"]);
     label_cell($myrow["stock_address"]);
     image_cell($myrow["stock_id"]);
     
