@@ -546,10 +546,13 @@ function image_cell($stock_id) {
     echo "<td>";
     echo "<div class='img-magnifier-container'>";
     $image = item_img_name($stock_id);
-    echo "<img id={$stock_id} alt=[$image.jpg] src='../../company/0/images/$image.jpg?nocache=1068708940'  height='200' border='0'>";
+    if (file_exists("../../company/0/images/$image.jpg")) {
+        echo "<img id={$stock_id} alt=[$image.jpg] src='../../company/0/images/$image.jpg?nocache=1068708940'  height='200' border='0'>";
+    }
+    
     echo "</div>";
     echo "</td>\n";
-    echo "<script>magnify('{$stock_id}', 3);</script>";
+    //echo "<script>magnify('{$stock_id}', 3);</script>";
 }
 
 function text_cells_ex($label, $name, $size, $max=null, $init=null, $title=null,
