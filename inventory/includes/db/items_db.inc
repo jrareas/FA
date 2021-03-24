@@ -169,7 +169,7 @@ function get_all_items($filters)
     }
     
     
-    $sql = "SELECT s.stock_id, s.description, mb_flag, sum(qty) on_hand, sum(pod.quantity_ordered - pod.quantity_received) on_order
+    $sql = "SELECT s.stock_id, s.description, mb_flag, qty on_hand, sum(pod.quantity_ordered - pod.quantity_received) on_order
             , stock_address, GROUP_CONCAT(distinct(pod.order_no))  orders 
             FROM " . TB_PREF . "stock_master s
             left join (select stock_id, sum(qty) qty from " . TB_PREF . "stock_moves group by stock_id ) m
