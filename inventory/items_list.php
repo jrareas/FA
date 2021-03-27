@@ -164,6 +164,7 @@ $th = [
     _("OnOrder"),
     _("ORders"),
     _("Address"),
+    _("Datasheet"),
     _("Image"),
     _(""),
 ];
@@ -187,12 +188,8 @@ while ($myrow = db_fetch($items_list))
     label_cell(trim($order_links,","));
     label_cell($myrow["stock_address"]);
     
+    link_cell("Datasheet", $myrow["datasheet_url"], $myrow["datasheet_url"]);
     image_cell($myrow["stock_id"]);
-    
-//     <img id="item_img" alt="[0805W8D1003T5E.jpg]" src="../../company/0/images/0805W8D1003T5E.jpg?nocache=1068708940" height="50" border="0">
-//     label_cell("");
-//     label_cell("");
-//     amount_cell($myrow["price"]);
     
     link_cell("Edit Product", "/inventory/manage/items.php?stock_id=" . $myrow["stock_id"],null, ICON_EDIT);
 //  	delete_button_cell("Delete".$myrow['stock_id'], _("Delete"));

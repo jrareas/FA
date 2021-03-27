@@ -621,7 +621,12 @@ function email_row_ex($label, $name, $size, $max=null, $title=null, $value=null,
 
 function link_cell($name, $value, $title=false, $icon=false, $target_blank=true) {
     echo "<td align='center'>";
-    echo "<a href='$value' " .  ($target_blank ? "target='_blank'>" : ">") . set_icon($icon) . "</a>";
+    if ($icon) {
+        echo "<a href='$value' " .  ($target_blank ? "target='_blank'>" : ">") . set_icon($icon) . "</a>";
+    } else {
+        echo "<a href='$value' " .  ($target_blank ? "target='_blank'>" : ">") . $title . "</a>";
+    }
+    
     echo "</td>";
 }
 
