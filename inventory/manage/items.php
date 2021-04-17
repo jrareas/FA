@@ -54,6 +54,17 @@ function set_edit($stock_id)
 	$_POST['depreciation_start'] = sql2date($_POST['depreciation_start']);
 	$_POST['depreciation_date'] = sql2date($_POST['depreciation_date']);
 	$_POST['del_image'] = 0;
+	$_POST["image_url_upload"] = "";
+}
+
+function get_image_file_name_to_save($file, $stockid) {
+    $file_ext = pathinfo(trim($file), PATHINFO_EXTENSION);
+    $filename .= "/".item_img_name($stockid);
+    $filename .= ".";
+    $filename .= strtoupper($file_ext) === "JPEG"? "jpg":$file_ext;
+    return [
+        $filename, $file_ext
+    ];
 }
 
 if (isset($_GET['stock_id']))
@@ -83,16 +94,13 @@ if (isset($_FILES['pic']) && $_FILES['pic']['name'] != '')
 	$stock_id = $_POST['NewStockID'];
 	$result = $_FILES['pic']['error'];
  	$upload_file = 'Yes'; //Assume all is well to start off with
-	$filename = company_path().'/images';
 	if (!file_exists($filename))
 	{
 		mkdir($filename);
 	}	
-	$file_ext = pathinfo(trim($_FILES['pic']['name']), PATHINFO_EXTENSION);
-	$filename .= "/".item_img_name($stock_id);
-	$filename .= ".";
-	$filename .= strtoupper($file_ext) === "JPEG"? "jpg":$file_ext;
-
+	list($filename, $file_ext) = get_image_file_name_to_save($_FILES['pic']['name'], $stock_id);
+	$filename = company_path().'/images' . $filename;
+	
   if ($_FILES['pic']['error'] == UPLOAD_ERR_INI_SIZE) {
     display_error(_('The file size is over the maximum allowed.'));
 		$upload_file ='No';
@@ -136,8 +144,6 @@ if (isset($_FILES['pic']) && $_FILES['pic']['name'] != '')
 			$upload_file ='No';
 		}
 	}
-	//renaming file to jpg in case of jpeg
-	//if (strtoupper($file_ext) == "JPEG")
 	
 	if ($upload_file == 'Yes')
 	{
@@ -150,6 +156,15 @@ if (isset($_FILES['pic']) && $_FILES['pic']['name'] != '')
 	}
 	$Ajax->activate('details');
  /* EOF Add Image upload for New Item  - by Ori */
+} else if (trim($_POST["image_url_upload"]) != ""){
+    $url = $_POST["image_url_upload"];
+    $filename = basename($_POST["image_url_upload"]);
+    list($filename, $file_ext) = get_image_file_name_to_save($filename, $stock_id);
+    $filename = company_path().'/images' . $filename;
+    
+    if(file_put_contents( $filename,file_get_contents($url))) {
+        $Ajax->activate('details');
+    }
 }
 
 if (get_post('fixed_asset')) {
@@ -502,6 +517,7 @@ function item_settings(&$stock_id, $new_item)
 	// Add image upload for New Item  - by Joe
 	file_row(_("Image File (.jpg)") . ":", 'pic', 'pic');
 	// Add Image upload for New Item  - by Joe
+	text_row(_("Image URL:"), 'image_url_upload', null, 52, 150);
 	$stock_img_link = "";
 	$check_remove_image = false;
 
