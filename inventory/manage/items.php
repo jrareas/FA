@@ -88,7 +88,10 @@ if (isset($_FILES['pic']) && $_FILES['pic']['name'] != '')
 	{
 		mkdir($filename);
 	}	
-	$filename .= "/".item_img_name($stock_id).(substr(trim($_FILES['pic']['name']), strrpos($_FILES['pic']['name'], '.')));
+	$file_ext = pathinfo(trim($_FILES['pic']['name']), PATHINFO_EXTENSION);
+	$filename .= "/".item_img_name($stock_id);
+	$filename .= ".";
+	$filename .= strtoupper($file_ext) === "JPEG"? "jpg":$file_ext;
 
   if ($_FILES['pic']['error'] == UPLOAD_ERR_INI_SIZE) {
     display_error(_('The file size is over the maximum allowed.'));
@@ -98,7 +101,6 @@ if (isset($_FILES['pic']) && $_FILES['pic']['name'] != '')
 		display_error(_('Error uploading file.'));
 		$upload_file ='No';
   }
-	
 	//But check for the worst 
 	if ((list($width, $height, $type, $attr) = getimagesize($_FILES['pic']['tmp_name'])) !== false)
 		$imagetype = $type;
@@ -110,9 +112,9 @@ if (isset($_FILES['pic']) && $_FILES['pic']['name'] != '')
 		display_warning( _('Only graphics files can be uploaded'));
 		$upload_file ='No';
 	}
-	elseif (!in_array(strtoupper(substr(trim($_FILES['pic']['name']), strlen($_FILES['pic']['name']) - 3)), array('JPG','PNG','GIF')))
+	elseif (!in_array(strtoupper($file_ext), array('JPEG','JPG','PNG','GIF')))
 	{
-		display_warning(_('Only graphics files are supported - a file extension of .jpg, .png or .gif is expected'));
+		display_warning(_('Only graphics files are supported - a file extension of .jpeg .jpg, .png or .gif is expected'));
 		$upload_file ='No';
 	} 
 	elseif ( $_FILES['pic']['size'] > ($SysPrefs->max_image_size * 1024)) 
@@ -134,6 +136,8 @@ if (isset($_FILES['pic']) && $_FILES['pic']['name'] != '')
 			$upload_file ='No';
 		}
 	}
+	//renaming file to jpg in case of jpeg
+	//if (strtoupper($file_ext) == "JPEG")
 	
 	if ($upload_file == 'Yes')
 	{
