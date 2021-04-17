@@ -44,7 +44,7 @@ function display_bom_items($selected_parent)
 	div_end();
 	start_table(TABLESTYLE, "width='60%'");
 	$th = array(_("Code"), _("Description"), _("Location"),
-		_("Work Centre"), _("Stock Address"),  _("Quantity"), _("Units"),'','');
+		_("Work Centre"), _("Stock Address"), _("Image"),  _("Quantity"), _("Units"),'','');
 	table_header($th);
 
 	$k = 0;
@@ -59,6 +59,7 @@ function display_bom_items($selected_parent)
         label_cell($myrow["location_name"]);
         label_cell($myrow["WorkCentreDescription"]);
         label_cell($myrow["stock_address"]);
+        image_cell($myrow["component"]);
         qty_cell($myrow["quantity"], false, get_qty_dec($myrow["component"]));
         label_cell($myrow["units"]);
  		edit_button_cell("Edit".$myrow['id'], _("Edit"));
