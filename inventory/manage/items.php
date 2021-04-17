@@ -194,6 +194,7 @@ function clear_data()
 	unset($_POST['depreciation_start']);
 	unset($_POST['stock_address']);
 	unset($_POST['datasheet_url']);
+	unset($_POST['image_url_upload']);
 }
 
 //------------------------------------------------------------------------------------
