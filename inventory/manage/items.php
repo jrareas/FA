@@ -291,6 +291,7 @@ if (isset($_POST['addupdate']))
 			    get_post('fa_class_id'),get_post('stock_address'),get_post('datasheet_url'));
 
 			display_notification(_("A new item has been added."));
+			clear_data();
 			$_POST['stock_id'] = $_POST['NewStockID'] = 
 			$_POST['description'] = $_POST['long_description'] = '';
 			$_POST['no_sale'] = $_POST['editable'] = $_POST['no_purchase'] =0;
