@@ -176,11 +176,14 @@ function get_all_items($filters)
     }
     
     
-    $sql = "SELECT s.stock_id, s.description, mb_flag, qty on_hand, sum(pod.quantity_ordered - pod.quantity_received) on_order
+    $sql = "SELECT s.stock_id, s.description, mb_flag, m.qty on_hand, sum(pod.quantity_ordered - pod.quantity_received) on_order ,
+            fba.qty as on_fba
             , stock_address, datasheet_url, barcode, supplier_part_number, GROUP_CONCAT(distinct(pod.order_no))  orders 
             FROM " . TB_PREF . "stock_master s
             left join (select stock_id, sum(qty) qty from " . TB_PREF . "stock_moves group by stock_id ) m
             on m.stock_id = s.stock_id
+            left join (select stock_id, sum(qty) qty from &TB_PREF&stock_moves where loc_code = 'YYZ4' group by stock_id ) fba
+            on fba.stock_id = s.stock_id
             left join " . TB_PREF . "purch_order_details pod 
             on pod.item_code = s.stock_id
             $wherestr 

@@ -162,6 +162,7 @@ $th = [
     _("Description"), 
     _("Type"), 
     _("OnHand"),
+    _("FBA"),
     _("OnOrder"),
     _("ORders"),
     _("Address"),
@@ -183,6 +184,7 @@ while ($myrow = db_fetch($items_list))
     label_cell($myrow["description"]);
     label_cell($myrow["mb_flag"]);
     qty_cell($myrow["on_hand"]);
+    qty_cell($myrow["on_fba"]);
     qty_cell($myrow["on_order"]);
     $order_links = "";
     foreach (explode(",", $myrow["orders"]) as $order) {

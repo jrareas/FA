@@ -157,6 +157,7 @@ if (isset($_FILES['pic']) && $_FILES['pic']['name'] != '')
 	$Ajax->activate('details');
  /* EOF Add Image upload for New Item  - by Ori */
 } else if (trim($_POST["image_url_upload"]) != ""){
+    $stock_id = $_POST['NewStockID'];
     $url = $_POST["image_url_upload"];
     $filename = basename($_POST["image_url_upload"]);
     list($filename, $file_ext) = get_image_file_name_to_save($filename, $stock_id);
