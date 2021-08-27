@@ -14,7 +14,8 @@ function update_item($stock_id, $description, $long_description, $category_id,
 	$cogs_account, 	$adjustment_account, $wip_account, $dimension_id, 
 	$dimension2_id, $no_sale, $editable, $no_purchase,
 	$depreciation_method = 'D', $depreciation_rate=100, $depreciation_factor=1,
-    $depreciation_start=null, $fa_class_id=null, $inventory_address=null, $datasheet_url=null)
+    $depreciation_start=null, $fa_class_id=null, $inventory_address=null, $datasheet_url=null,
+    $barcode=null)
 {
 	$sql = "UPDATE ".TB_PREF."stock_master SET long_description=".db_escape($long_description).",
 		description=".db_escape($description).",
@@ -35,7 +36,8 @@ function update_item($stock_id, $description, $long_description, $category_id,
 		depreciation_factor=".db_escape($depreciation_factor).",
 		fa_class_id=".db_escape($fa_class_id).",
         stock_address=".db_escape($inventory_address).",
-        datasheet_url=".db_escape($datasheet_url);
+        datasheet_url=".db_escape($datasheet_url). ",
+        barcode=".db_escape($barcode);
 	  
 	
 
@@ -62,12 +64,13 @@ function add_item($stock_id, $description, $long_description, $category_id,
 	$cogs_account, $adjustment_account,	$wip_account, $dimension_id, 
 	$dimension2_id, $no_sale, $editable, $no_purchase,
 	$depreciation_method='D', $depreciation_rate=100,  $depreciation_factor=1, $depreciation_start=null,
-    $fa_class_id=null, $inventory_address=null, $datasheet_url=null)
+    $fa_class_id=null, $inventory_address=null, $datasheet_url=null,
+    $barcode=null)
 {
 	$sql = "INSERT INTO ".TB_PREF."stock_master (stock_id, description, long_description, category_id,
 		tax_type_id, units, mb_flag, sales_account, inventory_account, cogs_account,
 		adjustment_account, wip_account, dimension_id, dimension2_id, no_sale, no_purchase, editable,
-		depreciation_method, depreciation_rate, depreciation_factor, stock_address, datasheet_url"
+		depreciation_method, depreciation_rate, depreciation_factor, stock_address, datasheet_url, barcode"
 		.(isset($depreciation_start) ? ", depreciation_start, depreciation_date, fa_class_id" : "")
 		.") VALUES (".db_escape($stock_id).", ".db_escape($description).", ".db_escape($long_description).",
 		".db_escape($category_id).", ".db_escape($tax_type_id).", "
@@ -80,7 +83,7 @@ function add_item($stock_id, $description, $long_description, $category_id,
 		.db_escape($no_purchase).","
 		.db_escape($editable).","
 		.db_escape($depreciation_method).",".db_escape($depreciation_rate).",".db_escape($depreciation_factor).","
-		.db_escape($inventory_address).",".db_escape($datasheet_url)
+		.db_escape($inventory_address).",".db_escape($datasheet_url).",".db_escape($barcode)
 		.(isset($depreciation_start) ? ",'".date2sql($depreciation_start)."','".date2sql($depreciation_start)."',".db_escape($fa_class_id) : "")
 		.")";
 
@@ -173,7 +176,7 @@ function get_all_items($filters)
     
     
     $sql = "SELECT s.stock_id, s.description, mb_flag, qty on_hand, sum(pod.quantity_ordered - pod.quantity_received) on_order
-            , stock_address, datasheet_url, GROUP_CONCAT(distinct(pod.order_no))  orders 
+            , stock_address, datasheet_url, barcode, GROUP_CONCAT(distinct(pod.order_no))  orders 
             FROM " . TB_PREF . "stock_master s
             left join (select stock_id, sum(qty) qty from " . TB_PREF . "stock_moves group by stock_id ) m
             on m.stock_id = s.stock_id

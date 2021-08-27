@@ -474,7 +474,8 @@ function item_search_form() {
     table_section(1);
     
     table_section_title(_("Search"));
-    text_row(_("Text:"), 'string_term', null, 52, 200);
+    text_row(_("Text:"), 'string_term', null, 52, 200, null, "class=searchbox");
+    
     start_row();
     echo "<td>";
     echo _("Empty Address Only");

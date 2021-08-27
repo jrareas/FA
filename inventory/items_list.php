@@ -165,6 +165,7 @@ $th = [
     _("ORders"),
     _("Address"),
     _("Datasheet"),
+    _("Barcode"),
     _("Image"),
     _(""),
 ];
@@ -189,6 +190,7 @@ while ($myrow = db_fetch($items_list))
     label_cell($myrow["stock_address"]);
     
     link_cell("Datasheet", $myrow["datasheet_url"], $myrow["datasheet_url"]);
+    label_cell($myrow["barcode"]);
     image_cell($myrow["stock_id"]);
     
     link_cell("Edit Product", "/inventory/manage/items.php?stock_id=" . $myrow["stock_id"],null, ICON_EDIT);
