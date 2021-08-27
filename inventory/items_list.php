@@ -157,7 +157,8 @@ start_table(TABLESTYLE, "width='80%'");
 
 // $th = array(_("Stock Id"), _("Description"), _("Type"), _("OnHand"), "Storage", "Address");
 $th = [
-    _("Stock Id"), 
+    _("Stock Id"),
+    _("Supplier #"),
     _("Description"), 
     _("Type"), 
     _("OnHand"),
@@ -178,6 +179,7 @@ while ($myrow = db_fetch($items_list))
 	alt_table_row_color($k);
 
 	label_cell($myrow["stock_id"]);
+	label_cell($myrow["supplier_part_number"]);
     label_cell($myrow["description"]);
     label_cell($myrow["mb_flag"]);
     qty_cell($myrow["on_hand"]);

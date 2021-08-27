@@ -196,6 +196,8 @@ function clear_data()
 	unset($_POST['datasheet_url']);
 	unset($_POST['image_url_upload']);
 	unset($_POST['barcode']);
+	unset($_POST['supplier_part_number']);
+	
 }
 
 //------------------------------------------------------------------------------------
@@ -268,7 +270,7 @@ if (isset($_POST['addupdate']))
 				check_value('no_sale'), check_value('editable'), check_value('no_purchase'),
 				get_post('depreciation_method'), input_num('depreciation_rate'), input_num('depreciation_factor'), get_post('depreciation_start', null),
 				get_post('fa_class_id'),
-			    get_post('stock_address'),get_post('datasheet_url'), get_post('barcode'));
+			    get_post('stock_address'),get_post('datasheet_url'), get_post('barcode'), get_post('supplier_part_number'));
 
 			update_record_status($_POST['NewStockID'], $_POST['inactive'],
 				'stock_master', 'stock_id');
@@ -290,7 +292,7 @@ if (isset($_POST['addupdate']))
 				check_value('no_sale'), check_value('editable'), check_value('no_purchase'),
 				get_post('depreciation_method'), input_num('depreciation_rate'), input_num('depreciation_factor'), get_post('depreciation_start', null),
 			    get_post('fa_class_id'),get_post('stock_address'),get_post('datasheet_url'),
-			    get_post('barcode'));
+			    get_post('barcode'),get_post('supplier_part_number'));
 
 			display_notification(_("A new item has been added."));
 			clear_data();
@@ -386,6 +388,7 @@ function item_settings(&$stock_id, $new_item)
 	}
 	$fixed_asset = get_post('fixed_asset');
 
+	text_row(_("Supplier #:"), 'supplier_part_number', null, 21, 20);
 	text_row(_("Name:"), 'description', null, 52, 200);
 
 	textarea_row(_('Description:'), 'long_description', null, 42, 3);
