@@ -195,51 +195,52 @@ if (get_post('stock_id') != '')
 		on_submit($selected_parent, $selected_id);
 	//--------------------------------------------------------------------------------------
 
-start_form();
-	display_bom_items($selected_parent);
-	//--------------------------------------------------------------------------------------
-	echo '<br>';
 
-	start_table(TABLESTYLE2);
-
-	if ($selected_id != -1)
-	{
- 		if ($Mode == 'Edit') {
-			//editing a selected component from the link to the line item
-			$myrow = get_component_from_bom($selected_id);
-
-			$_POST['loc_code'] = $myrow["loc_code"];
-			$_POST['component'] = $myrow["component"]; // by Tom Moulton
-			$_POST['workcentre_added']  = $myrow["workcentre_added"];
-			$_POST['quantity'] = number_format2($myrow["quantity"], get_qty_dec($myrow["component"]));
-			label_row(_("Component:"), $myrow["component"] . " - " . $myrow["description"]);
-		}
-		hidden('selected_id', $selected_id);
-	}
-	else
-	{
-		start_row();
-		label_cell(_("Component:"), "class='label'");
-
-		echo "<td>";
-		echo stock_component_items_list('component', $selected_parent, null, false, true);
-		if (get_post('_component_update')) 
+//here
+		start_form();
+		start_table(TABLESTYLE2);
+		
+		if ($selected_id != -1)
 		{
-			$Ajax->activate('quantity');
+		    if ($Mode == 'Edit') {
+		        //editing a selected component from the link to the line item
+		        $myrow = get_component_from_bom($selected_id);
+		        
+		        $_POST['loc_code'] = $myrow["loc_code"];
+		        $_POST['component'] = $myrow["component"]; // by Tom Moulton
+		        $_POST['workcentre_added']  = $myrow["workcentre_added"];
+		        $_POST['quantity'] = number_format2($myrow["quantity"], get_qty_dec($myrow["component"]));
+		        label_row(_("Component:"), $myrow["component"] . " - " . $myrow["description"]);
+		    }
+		    hidden('selected_id', $selected_id);
 		}
-		echo "</td>";
-		end_row();
-	}
-//	hidden('stock_id', $selected_parent);
-
-	locations_list_row(_("Location to Draw From:"), 'loc_code', null);
+		else
+		{
+		    start_row();
+		    label_cell(_("Component:"), "class='label'");
+		    
+		    echo "<td>";
+		    echo stock_component_items_list('component', $selected_parent, null, false, true);
+		    if (get_post('_component_update'))
+		    {
+		        $Ajax->activate('quantity');
+		    }
+		    echo "</td>";
+		    end_row();
+		}
+    locations_list_row(_("Location to Draw From:"), 'loc_code', null);
 	workcenter_list_row(_("Work Centre Added:"), 'workcentre_added', null);
 	$dec = get_qty_dec(get_post('component'));
 	$_POST['quantity'] = number_format2(input_num('quantity',1), $dec);
 	qty_row(_("Quantity:"), 'quantity', null, null, null, $dec);
-
+	
 	end_table(1);
 	submit_add_or_update_center($selected_id == -1, '', 'both');
+		
+	display_bom_items($selected_parent);
+	//--------------------------------------------------------------------------------------
+	echo '<br>';
+
 	end_form();
 }
 // ----------------------------------------------------------------------------------
