@@ -37,9 +37,11 @@ function update_item($stock_id, $description, $long_description, $category_id,
 		fa_class_id=".db_escape($fa_class_id).",
         stock_address=".db_escape($inventory_address).",
         datasheet_url=".db_escape($datasheet_url). ",
-        barcode=".db_escape($barcode) .",
         supplier_part_number=" .db_escape($supplier_part_number);
-	  
+	if ($barcode) {
+	    $sql .= ",barcode=".db_escape($barcode);
+	    
+	}
 	
 
 	if ($units != '')
@@ -84,7 +86,7 @@ function add_item($stock_id, $description, $long_description, $category_id,
 		.db_escape($no_purchase).","
 		.db_escape($editable).","
 		.db_escape($depreciation_method).",".db_escape($depreciation_rate).",".db_escape($depreciation_factor).","
-		.db_escape($inventory_address).",".db_escape($datasheet_url).",".db_escape($barcode).",".db_escape($supplier_part_number)
+		    .db_escape($inventory_address).",".db_escape($datasheet_url).",".($barcode != "" ? db_escape($barcode) : "null") .",".db_escape($supplier_part_number)
 		.(isset($depreciation_start) ? ",'".date2sql($depreciation_start)."','".date2sql($depreciation_start)."',".db_escape($fa_class_id) : "")
 		.")";
 

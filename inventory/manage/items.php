@@ -179,6 +179,7 @@ check_db_has_item_tax_types(_("There are no item tax types defined in the system
 function clear_data()
 {
 	unset($_POST['long_description']);
+	unset($_POST['sales_account']);
 	unset($_POST['description']);
 	unset($_POST['category_id']);
 	unset($_POST['tax_type_id']);
