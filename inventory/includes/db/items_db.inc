@@ -151,6 +151,7 @@ function get_all_items($filters)
             $term_items = [
                 's.description',
                 's.stock_id',
+                's.long_description',
                 's.stock_address'
             ];
             foreach ($term_items as $term_item) {
