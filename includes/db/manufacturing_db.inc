@@ -209,13 +209,15 @@ function get_bom($item)
     	item.description, item.mb_flag AS ResourceType, 
     	item.material_cost AS ProductCost, units,
     	bom.quantity * item.material_cost AS ComponentCost,
-        stock_address
+        stock_address, available
     	FROM ".TB_PREF."workcentres centre,
     		".TB_PREF."locations loc,
     		".TB_PREF."bom bom
 	    		INNER JOIN ".TB_PREF."stock_master item ON bom.component = item.stock_id 
+	    		inner join (select loc_code, stock_id, sum(qty) available from 0_stock_moves group by loc_code, stock_id) smov ON item.stock_id = smov.stock_id 
     	WHERE bom.parent = ".db_escape($item)."
-		AND centre.id=bom.workcentre_added
+		AND loc.loc_code = smov.loc_code 
+		and centre.id=bom.workcentre_added
 		AND bom.loc_code = loc.loc_code ORDER BY bom.id";
 	
 	return db_query($sql, "The bill of material could not be retrieved");
