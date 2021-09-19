@@ -181,6 +181,9 @@ echo _("Select a currency :") . "  ";
 echo currencies_list('curr_abrev', null, true, true);
 echo "</center>";
 
+
+display_rate_edit();
+
 // if currency sel has changed, clear the form
 if ($_POST['curr_abrev'] != get_global_curr_code())
 {
@@ -215,7 +218,6 @@ else
 		$table->ready = false;
 	display_db_pager($table);
    	br(1);
-    display_rate_edit();
 }
 
 end_form();
