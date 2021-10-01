@@ -170,6 +170,10 @@ function get_all_items($filters)
         $where[] = "mb_flag = '" . $filters['mb_flag'] . "'";
     }
     
+    if($filters['order_no'] && $filters['order_no'] != "") {
+        $where[] = "pod.order_no = ". $filters['order_no'];
+    }   
+    
     if (count($where) > 0) {
         $wherestr = 'where ' . implode(" AND ", $where);
     }

@@ -82,6 +82,7 @@ $upload_file = "";
 function clear_data()
 {
 	unset($_POST['long_description']);
+	unset($_POST['order_no']);
 	unset($_POST['description']);
 	unset($_POST['category_id']);
 	unset($_POST['tax_type_id']);
@@ -474,7 +475,9 @@ function item_search_form() {
     table_section(1);
     
     table_section_title(_("Search"));
-    text_row(_("Text:"), 'string_term', null, 52, 200, null, "class=searchbox");
+//     text_row(_("Text:"), 'string_term', null, 52, 200, null, "class=searchbox");
+    text_row(_("Text:"), 'string_term', null, 52, 200);
+    text_row(_("Order #:"), 'order_no', null, 20, 10);
     
     start_row();
     echo "<td>";
