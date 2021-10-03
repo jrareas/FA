@@ -478,7 +478,7 @@ function item_search_form() {
 //     text_row(_("Text:"), 'string_term', null, 52, 200, null, "class=searchbox");
     text_row(_("Text:"), 'string_term', null, 52, 200);
     text_row(_("Order #:"), 'order_no', null, 20, 10);
-    
+    stock_categories_list_row(_("Category:"), 'category_id', null, "Please Select...", $new_item, $fixed_asset);
     start_row();
     echo "<td>";
     echo _("Empty Address Only");
