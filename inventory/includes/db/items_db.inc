@@ -166,6 +166,10 @@ function get_all_items($filters)
     if ($filters['category_id'] != -1 ) {
         $where[] = "s.category_id = " . $filters['category_id'];
     }
+
+    if ($filters['barcode'] && $filters['barcode'] != "") {
+        $where[] = "barcode = '" . $filters['barcode'] . "'";
+    }
     if ($filters['empty_address_only'] && $filters['empty_address_only'] == true) {
         $where[] = "stock_address is null";
     }

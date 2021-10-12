@@ -61,10 +61,8 @@ if (isset($_GET['stock_id']))
 	$_POST['stock_id'] = $_GET['stock_id'];
 }
 $stock_id = get_post('stock_id');
-if (list_updated('stock_id')) {
-	$_POST['NewStockID'] = $stock_id = get_post('stock_id');
-    clear_data();
-	$Ajax->activate('details');
+if (list_updated('list')) {
+	$Ajax->activate('search');
 	$Ajax->activate('controls');
 }
 
@@ -475,11 +473,14 @@ function item_search_form() {
     table_section(1);
     
     table_section_title(_("Search"));
-//     text_row(_("Text:"), 'string_term', null, 52, 200, null, "class=searchbox");
-    text_row(_("Text:"), 'string_term', null, 52, 200);
-    text_row(_("Order #:"), 'order_no', null, 20, 10);
-    stock_categories_list_row(_("Category:"), 'category_id', null, "Please Select...", $new_item, $fixed_asset);
+    text_cells_ex(_("Text:"), 'string_term',52, 200, null, "", "", NULL, true);
     start_row();
+    text_cells_ex(_("Barcode:"), 'barcode',40, 200, null, "", "", NULL, true);
+    start_row();
+    text_cells_ex(_("Order #:"), 'order_no',20, 10, null, "", "", NULL, true);
+    stock_categories_list_row(_("Category:"), 'category_id', null, "Please Select...", true);
+    start_row();
+    echo "<input type=hidden name=_list_update />";
     echo "<td>";
     echo _("Empty Address Only");
     echo "</td>";
@@ -498,7 +499,7 @@ function item_search_form() {
     stock_item_types_list_row(_("Item Type:"), 'mb_flag', null, true, true);
     end_outer_table(1);
     hidden("search_submit",true);
-    submit_center('search_results', _("Search"), true, '', 'selector');
+    submit_center('search_results', _("Search"), true, '', 'default', true);
 }
 
 //-------------------------------------------------------------------------------------------- 
