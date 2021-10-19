@@ -164,7 +164,8 @@ $th = [
     _("OnHand"),
     _("FBA"),
     _("OnOrder"),
-    _("ORders"),
+    _("Purc Orders"),
+    _("Sales Orders"),
     _("Address"),
     _("Datasheet"),
     _("Barcode"),
@@ -189,6 +190,11 @@ while ($myrow = db_fetch($items_list))
     $order_links = "";
     foreach (explode(",", $myrow["orders"]) as $order) {
         $order_links .= get_supplier_trans_view_str(ST_PURCHORDER,$order) . " ,";
+    }
+    label_cell(trim($order_links,","));
+    $order_links = "";
+    foreach (explode(",", $myrow["sales"]) as $order) {
+        $order_links .= get_customer_trans_view_str(ST_SALESORDER,$order) . " ,";
     }
     label_cell(trim($order_links,","));
     label_cell($myrow["stock_address"]);
